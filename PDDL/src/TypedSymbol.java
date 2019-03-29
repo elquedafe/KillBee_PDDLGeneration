@@ -72,6 +72,11 @@ public final class TypedSymbol extends Symbol {
         }
     }
     
+    /**
+     * New constructor for adding object type
+     * @param symbol
+     * @param typeObj
+     */
     public TypedSymbol(final Symbol symbol, String typeObj) {
         super(symbol.getKind(), symbol.getImage(), symbol.getBeginLine(), symbol.getBeginColumn(), symbol
             .getEndLine(), symbol.getEndColumn());
