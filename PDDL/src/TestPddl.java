@@ -3,10 +3,10 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
-
-import fr.uga.pddl4j.parser.*;
-
+import java.util.Map;
 
 
 
@@ -38,6 +38,7 @@ public class TestPddl {
 		//REQUIREMENTS
 		domain.addRequirement(RequireKey.STRIPS);
 		domain.addRequirement(RequireKey.TYPING);
+		domain.addRequirement(RequireKey.MULTI_AGENT);
 		/*
 		 * :multi-agent :unfactored-privacy
 		 * These both requirements are missing because pddl4j 
@@ -45,8 +46,8 @@ public class TestPddl {
 		 */
 		
 		//TYPES
-		TypedSymbol type = new TypedSymbol(new Symbol(Symbol.Kind.VARIABLE, "bee location hive plant sector crop"));
-		type.addType(new Symbol(Symbol.Kind.TYPE, "object"));
+		TypedSymbol type = new TypedSymbol(new Symbol(Symbol.Kind.VARIABLE, "bee location hive plant sector"));
+		//type.addType(new Symbol(Symbol.Kind.TYPE, "object"));
 		domain.addType(type);
 		
 		type = new TypedSymbol(new Symbol(Symbol.Kind.VARIABLE, "tracker fumigator"));
@@ -765,10 +766,63 @@ public class TestPddl {
 		
 		effects.addChild(effect);
 		
+		//AGENT
+		TypedSymbol agent = new TypedSymbol(new Symbol(Symbol.Kind.AGENT, "b"));
+		agent.addType(new Symbol(Symbol.Kind.TYPE, "tracker"));
 		
-		
-		op = new Op(new Symbol(Symbol.Kind.ACTION, "back-home"), parameters, preconditions, effects);
+		op = new Op(new Symbol(Symbol.Kind.ACTION, "back-home"), agent, parameters, preconditions, effects);
 		domain.addOperator(op);
+		
+		
+		
+		/*
+		
+		//Test buildAction
+		Map<String,String> params = new HashMap<String,String>();
+		//PARAMS
+		params.put("b", "tracker");
+		params.put("l1", "location");
+		params.put("l2", "location");
+		
+		//PRECONDITIONS
+		Map<HashMap<String, ArrayList<String>>, String> pres = new HashMap<HashMap<String,ArrayList<String>>,String>();
+		HashMap<String, ArrayList<String>> precods = new HashMap<String, ArrayList<String>>();
+		//p1
+		String bool = "false";
+		ArrayList<String> variables = new ArrayList<String>();
+		variables.add("b");
+		variables.add("l1");
+		precods.put("precondition1", variables);
+		
+		//p2
+		bool = "true";
+		variables = new ArrayList<String>();
+		variables.add("l1");
+		variables.add("l2");
+		precods.put("precondition2", variables);
+		
+		//EFFECTS
+		Map<HashMap<String, ArrayList<String>>, String> effs = new HashMap<HashMap<String,ArrayList<String>>,String>();
+		HashMap<String, ArrayList<String>> precods = new HashMap<String, ArrayList<String>>();
+		//p1
+		String bool = "false";
+		ArrayList<String> variables = new ArrayList<String>();
+		variables.add("b");
+		variables.add("l1");
+		precods.put("precondition1", variables);
+		
+		//p2
+		bool = "true";
+		variables = new ArrayList<String>();
+		variables.add("l1");
+		variables.add("l2");
+		precods.put("precondition2", variables);
+		
+		
+		Map<HashMap<String, ArrayList<String>>, String>  effs = new HashMap<HashMap<String,ArrayList<String>>,String>();
+		
+		buildAction("accion1", params, pres, effs, domain);
+		*/
 		
 		//WRITE FILE
 		String domainString = domain.toString();
@@ -779,5 +833,73 @@ public class TestPddl {
 
 		System.out.println(domainString);
 	}
+	
+	/*
+	private static void buildAction(String actionName, Map<String, String> params, List<HashMap<HashMap<String,ArrayList<String>>,String>> pre, List<Map<HashMap<String,ArrayList<String>>,String>> eff, Domain domain) {
+		//Parameters
+		List<TypedSymbol> parameters = new ArrayList<TypedSymbol>();
+		TypedSymbol parameter = null;
+		for(Map.Entry<String, String> entry : params.entrySet()){
+			parameter = new TypedSymbol(new Symbol(Symbol.Kind.VARIABLE, "?"+entry.getKey()));
+			parameter.addType(new Symbol(Symbol.Kind.TYPE, entry.getValue()));
+			parameters.add(parameter);
+		}
+		
+		//PRECOND
+		Exp preconditions = null;
+		Exp precondition = null;
+		Exp precondNot = null;
+		List<Symbol> atomsPre = new ArrayList<Symbol>();
+		
+		//EFFECTS
+		
+		Exp effects = null;
+		Exp effect = null;
+		Exp effectNot = null;
+		List<Symbol> atomsEff = new ArrayList<Symbol>();
+		if(pre.size()>1) {
+			effects = new Exp(Connective.AND);
+			effect = new Exp(Connective.ATOM);
+		}
+		else {
+			effects = new Exp(Connective.ATOM);
+		}
+		
+		for(Map<HashMap<String,ArrayList<String>>,String> e : eff) {
+			for(Map.Entry<HashMap<String,ArrayList<String>>,String> entry : e.entrySet()){
+				if(entry.getValue().equals("false")) {
+					effectNot = new Exp(Connective.NOT);
+				}
+				//Fill atom list
+				for(Map.Entry<String,ArrayList<String>> effectEntry : entry.getKey().entrySet() ) {
+					atomsEff.add(new Symbol(Symbol.Kind.PREDICATE, effectEntry.getKey()));
+					for(String var : effectEntry.getValue()) {
+						atomsEff.add(new Symbol(Symbol.Kind.VARIABLE, "?"+var));
+					}
+				}
+				
+				
+				if(pre.size()>1) {
+					effect.setAtom(atomsEff);
+					if(entry.getValue().equals("false")) {
+						effectNot.addChild(effect);;
+						effects.addChild(effectNot);
+						
+					}
+					else {
+						effects.addChild(effect);
+					}
+				}
+				else
+					effects.setAtom(atomsEff);
+				
+			}
+		}
+		Op op = new Op(new Symbol(Symbol.Kind.ACTION, actionName), parameters, preconditions, effects);
+		domain.addOperator(op);
+		
+	}*/
+	
+	
 
 }

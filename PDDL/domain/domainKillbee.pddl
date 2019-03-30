@@ -1,7 +1,7 @@
 (define (domain killbee)
-(:requirements :strips :typing)
+(:requirements :strips :typing :multi-agent)
 (:types 
-  bee location hive plant sector crop - object
+  bee location hive plant sector - object
   tracker fumigator - bee
 )
 (:predicates 
@@ -16,6 +16,7 @@
   (last-plant)
 )
 (:action fly-to-first-plant
+
 :parameters (?b - tracker ?h - hive ?hivelocation - location ?l - location ?s - sector)
 :precondition 
   (and (in ?b ?h)
@@ -27,6 +28,7 @@
   (not (tracker-ready-to-move ?b)))
 )
 (:action assign-sector
+
 :parameters (?b - tracker ?h - hive ?l - location ?s - sector)
 :precondition 
   (and (in ?b ?h)
@@ -38,6 +40,7 @@
   (bee-with-sector ?b ?s))
 )
 (:action analyze-plant
+
 :parameters (?b - tracker ?l - location ?s - sector ?p - plant ?h - hive)
 :precondition 
   (and (at ?b ?l)
@@ -49,6 +52,7 @@
   (last-plant))
 )
 (:action go-to-next-plant
+
 :parameters (?b - tracker ?from - location ?target - location ?s - sector ?p - plant ?h - hive)
 :precondition 
   (and (directly-connected ?from ?target)
@@ -62,6 +66,7 @@
   (not (at ?b ?from)))
 )
 (:action analyze-last-plant
+
 :parameters (?b - tracker ?l - location ?s - sector ?p - plant ?h - hive)
 :precondition 
   (and (at ?b ?l)
@@ -75,6 +80,8 @@
   (sector-tracked ?s))
 )
 (:action back-home
+b1 - tracker
+:agent b1 - tracker
 :parameters (?b - tracker ?from - location ?target - location ?s - sector ?h - hive)
 :precondition 
   (and (tracker-ready-to-move ?b)
