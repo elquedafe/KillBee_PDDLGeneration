@@ -771,11 +771,13 @@ public class TestPddl {
 		domain.addOperator(op);
 		
 		//WRITE FILE
-		w.print(domain.toString());
+		String domainString = domain.toString();
+		domainString = domainString.toLowerCase();
+		w.print(domainString);
 		w.close();
 		
 
-		System.out.println(domain.toString());
+		System.out.println(domainString);
 	}
 
 }

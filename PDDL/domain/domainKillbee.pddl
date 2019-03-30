@@ -1,22 +1,22 @@
 (define (domain killbee)
 (:requirements :strips :typing)
 (:types 
-  bee location hive plant sector crop - OBJECT
-  tracker fumigator - BEE
+  bee location hive plant sector crop - object
+  tracker fumigator - bee
 )
 (:predicates 
-  (directly-connected ?l1 - LOCATION ?l2 - LOCATION)
-  (at ?b - BEE ?l - LOCATION)
-  (in ?b - BEE ?h - HIVE)
-  (free-sector ?s - SECTOR)
-  (sector-tracked ?s - SECTOR)
-  (bee-with-sector ?b - TRACKER ?s - SECTOR)
-  (plant-analyzed ?p - PLANT)
-  (tracker-ready-to-move ?b - TRACKER)
+  (directly-connected ?l1 - location ?l2 - location)
+  (at ?b - bee ?l - location)
+  (in ?b - bee ?h - hive)
+  (free-sector ?s - sector)
+  (sector-tracked ?s - sector)
+  (bee-with-sector ?b - tracker ?s - sector)
+  (plant-analyzed ?p - plant)
+  (tracker-ready-to-move ?b - tracker)
   (last-plant)
 )
 (:action fly-to-first-plant
-:parameters (?b - TRACKER ?h - HIVE ?hivelocation - LOCATION ?l - LOCATION ?s - SECTOR)
+:parameters (?b - tracker ?h - hive ?hivelocation - location ?l - location ?s - sector)
 :precondition 
   (and (in ?b ?h)
   (directly-connected ?hivelocation ?l)
@@ -27,7 +27,7 @@
   (not (tracker-ready-to-move ?b)))
 )
 (:action assign-sector
-:parameters (?b - TRACKER ?h - HIVE ?l - LOCATION ?s - SECTOR)
+:parameters (?b - tracker ?h - hive ?l - location ?s - sector)
 :precondition 
   (and (in ?b ?h)
   (free-sector ?s)
@@ -38,7 +38,7 @@
   (bee-with-sector ?b ?s))
 )
 (:action analyze-plant
-:parameters (?b - TRACKER ?l - LOCATION ?s - SECTOR ?p - PLANT ?h - HIVE)
+:parameters (?b - tracker ?l - location ?s - sector ?p - plant ?h - hive)
 :precondition 
   (and (at ?b ?l)
   (not (plant-analyzed ?p))
@@ -49,7 +49,7 @@
   (last-plant))
 )
 (:action go-to-next-plant
-:parameters (?b - TRACKER ?from - LOCATION ?target - LOCATION ?s - SECTOR ?p - PLANT ?h - HIVE)
+:parameters (?b - tracker ?from - location ?target - location ?s - sector ?p - plant ?h - hive)
 :precondition 
   (and (directly-connected ?from ?target)
   (not (sector-tracked ?s))
@@ -62,7 +62,7 @@
   (not (at ?b ?from)))
 )
 (:action analyze-last-plant
-:parameters (?b - TRACKER ?l - LOCATION ?s - SECTOR ?p - PLANT ?h - HIVE)
+:parameters (?b - tracker ?l - location ?s - sector ?p - plant ?h - hive)
 :precondition 
   (and (at ?b ?l)
   (last-plant)
@@ -75,7 +75,7 @@
   (sector-tracked ?s))
 )
 (:action back-home
-:parameters (?b - TRACKER ?from - LOCATION ?target - LOCATION ?s - SECTOR ?h - HIVE)
+:parameters (?b - tracker ?from - location ?target - location ?s - sector ?h - hive)
 :precondition 
   (and (tracker-ready-to-move ?b)
   (sector-tracked ?s)
