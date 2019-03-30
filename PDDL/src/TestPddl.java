@@ -39,11 +39,6 @@ public class TestPddl {
 		domain.addRequirement(RequireKey.STRIPS);
 		domain.addRequirement(RequireKey.TYPING);
 		domain.addRequirement(RequireKey.MULTI_AGENT);
-		/*
-		 * :multi-agent :unfactored-privacy
-		 * These both requirements are missing because pddl4j 
-		 * do not support multi-agent PDDL extension
-		 */
 		
 		//TYPES
 		TypedSymbol type = new TypedSymbol(new Symbol(Symbol.Kind.VARIABLE, "bee location hive plant sector"));
@@ -239,8 +234,12 @@ public class TestPddl {
 		effectNot.addChild(effect);
 		effects.addChild(effectNot);
 		
+			//AGENT
+		TypedSymbol agent = new TypedSymbol(new Symbol(Symbol.Kind.VARIABLE, "b"));
+		agent.addType(new Symbol(Symbol.Kind.TYPE, "tracker"));
 		
-		Op op = new Op(new Symbol(Symbol.Kind.ACTION, "fly-to-first-plant"), parameters, preconditions, effects);
+		
+		Op op = new Op(new Symbol(Symbol.Kind.ACTION, "fly-to-first-plant"), agent, parameters, preconditions, effects);
 		domain.addOperator(op);
 		
 			//ACTION 2
@@ -326,8 +325,11 @@ public class TestPddl {
 		
 		effects.addChild(effect);
 		
+		//AGENT
+		agent = new TypedSymbol(new Symbol(Symbol.Kind.VARIABLE, "h"));
+		agent.addType(new Symbol(Symbol.Kind.TYPE, "hive"));
 		
-		op = new Op(new Symbol(Symbol.Kind.ACTION, "assign-sector"), parameters, preconditions, effects);
+		op = new Op(new Symbol(Symbol.Kind.ACTION, "assign-sector"), agent, parameters, preconditions, effects);
 		domain.addOperator(op);
 		
 			//ACTION3
@@ -412,8 +414,11 @@ public class TestPddl {
 		
 		effects.addChild(effect);
 		
+		//AGENT
+		agent = new TypedSymbol(new Symbol(Symbol.Kind.VARIABLE, "b"));
+		agent.addType(new Symbol(Symbol.Kind.TYPE, "tracker"));
 		
-		op = new Op(new Symbol(Symbol.Kind.ACTION, "analyze-plant"), parameters, preconditions, effects);
+		op = new Op(new Symbol(Symbol.Kind.ACTION, "analyze-plant"), agent, parameters, preconditions, effects);
 		domain.addOperator(op);		
 		
 			//ACTION 4
@@ -528,9 +533,11 @@ public class TestPddl {
 		effectNot.addChild(effect);
 		effects.addChild(effectNot);
 		
+		//AGENT
+		agent = new TypedSymbol(new Symbol(Symbol.Kind.VARIABLE, "b"));
+		agent.addType(new Symbol(Symbol.Kind.TYPE, "tracker"));
 		
-		
-		op = new Op(new Symbol(Symbol.Kind.ACTION, "go-to-next-plant"), parameters, preconditions, effects);
+		op = new Op(new Symbol(Symbol.Kind.ACTION, "go-to-next-plant"), agent, parameters, preconditions, effects);
 		domain.addOperator(op);
 
 				//ACTION5
@@ -635,8 +642,11 @@ public class TestPddl {
 		
 		effects.addChild(effect);
 		
+		//AGENT
+		agent = new TypedSymbol(new Symbol(Symbol.Kind.VARIABLE, "b"));
+		agent.addType(new Symbol(Symbol.Kind.TYPE, "tracker"));		
 		
-		op = new Op(new Symbol(Symbol.Kind.ACTION, "analyze-last-plant"), parameters, preconditions, effects);
+		op = new Op(new Symbol(Symbol.Kind.ACTION, "analyze-last-plant"), agent, parameters, preconditions, effects);
 		domain.addOperator(op);
 		
 			//ACTION 6
@@ -767,7 +777,7 @@ public class TestPddl {
 		effects.addChild(effect);
 		
 		//AGENT
-		TypedSymbol agent = new TypedSymbol(new Symbol(Symbol.Kind.AGENT, "b"));
+		agent = new TypedSymbol(new Symbol(Symbol.Kind.VARIABLE, "b"));
 		agent.addType(new Symbol(Symbol.Kind.TYPE, "tracker"));
 		
 		op = new Op(new Symbol(Symbol.Kind.ACTION, "back-home"), agent, parameters, preconditions, effects);

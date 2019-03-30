@@ -388,7 +388,7 @@ public class Op implements Serializable {
        //NEW
         if((this.agent != null)) {
         	str.append("\n").append(":agent ");
-        	str.append(this.agent.toString());
+        	str.append("?"+this.agent.toString());
         }
         str.append("\n").append(":parameters").append(" (");
         for (int i = 0; i < this.parameters.size() - 1; i++) {
