@@ -384,10 +384,10 @@ public class Op implements Serializable {
             str.append("(:durative-action ");
         }
         
-        str.append(this.name.toString()).append("\n");
+        str.append(this.name.toString());
        //NEW
         if((this.agent != null)) {
-        	str.append(this.agent.toString()).append("\n").append(":agent ");
+        	str.append("\n").append(":agent ");
         	str.append(this.agent.toString());
         }
         str.append("\n").append(":parameters").append(" (");
