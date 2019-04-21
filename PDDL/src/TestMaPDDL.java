@@ -12,11 +12,11 @@ import java.util.Scanner;
 
 
 
-public class TestPddl {
+public class TestMaPDDL {
 
 	public static void main(String[] args) {
-		File fDom = new File("domain/domainKillbee2.pddl");
-		File fProb = new File("problem/problemKillbee2.pddl");
+		File fDom = new File("domain/domain.pddl");
+		File fProb = new File("problem/problem.pddl");
 		Scanner sc = null;
 		
 		//Check file domain
@@ -59,14 +59,14 @@ public class TestPddl {
 		sc = new Scanner(System.in);
 		
 		System.out.println("Tracker bees number: ");
-		//int nTrackers = sc.nextInt();
-		int nTrackers = 2;
+		int nTrackers = sc.nextInt();
+		//int nTrackers = 3;
 		System.out.println("Fumigator bees number: ");
-		//int nFumigators = sc.nextInt();
-		int nFumigators = 1;
+		int nFumigators = sc.nextInt();
+		//int nFumigators = 3;
 		System.out.println("Plants number: ");
-		//int nPlants = sc.nextInt();
-		int nPlants = 6;
+		int nPlants = sc.nextInt();
+		//int nPlants = 7;
 		
 		String name = nTrackers+"trackers-"+nPlants+"plants";
 		String problemString = writeProblem(wDom, name, nTrackers, nFumigators, nPlants);
@@ -162,6 +162,23 @@ public class TestPddl {
 			init.setAtom(atoms);
 			init.addChild(init);
 			problem.addInitialFact(init);
+			
+			init = new Exp(Connective.ATOM);
+			atoms = new ArrayList<Symbol>();
+			atoms.add(new Symbol(Symbol.Kind.PREDICATE, "pesticide-tank-empty"));
+			atoms.add(new Symbol(Symbol.Kind.VARIABLE, "fum"+(i+1)));
+			init.setAtom(atoms);
+			init.addChild(init);
+			problem.addInitialFact(init);
+		}
+		for(int i = 0; i < nPlants; i++) {
+			init = new Exp(Connective.ATOM);
+			List<Symbol> atoms = new ArrayList<Symbol>();
+			atoms.add(new Symbol(Symbol.Kind.PREDICATE, "healthy-plant"));
+			atoms.add(new Symbol(Symbol.Kind.VARIABLE, "p"+(i+1)));
+			init.setAtom(atoms);
+			init.addChild(init);
+			problem.addInitialFact(init);
 		}
 			//Sector assignment
 		sectorAssignment(nTrackers, nPlants);
@@ -196,6 +213,13 @@ public class TestPddl {
 			atoms.add(new Symbol(Symbol.Kind.VARIABLE, "p"+(i+1)));
 			goal.setAtom(atoms);
 			goals.addChild(goal);
+			
+			goal = new Exp(Connective.ATOM);
+			atoms = new ArrayList<Symbol>();
+			atoms.add(new Symbol(Symbol.Kind.PREDICATE, "healthy-plant"));
+			atoms.add(new Symbol(Symbol.Kind.VARIABLE, "p"+(i+1)));
+			goal.setAtom(atoms);
+			goals.addChild(goal);
 		}
 		
 		problem.setGoal(goals);
@@ -209,7 +233,7 @@ public class TestPddl {
 		List<String> ret = new ArrayList<String>();
 		int nSectors = nTrackers;
 		int plantsPerSector = (int) Math.floor(nPlants/nSectors);
-		int nSectorsWithAdditionalPlant = (int) ((( (float)nPlants/(float)nSectors ) - plantsPerSector)*nSectors);
+		int nSectorsWithAdditionalPlant = Math.round((( (float)nPlants/(float)nSectors ) - plantsPerSector)*nSectors);
 		int indexPlant = 1;
 		
 		for(int i = 0; i < nSectors; i++) {
@@ -220,7 +244,6 @@ public class TestPddl {
 				for(int j = 0; j < (plantsPerSector+1); j++) {
 					listPlantsSector.add("p"+indexPlant);
 					if(firstPlant) {
-						System.out.println("first-plant tr"+(i+1)+" p"+indexPlant);
 						ret.add("first-plant tr"+(i+1)+" p"+indexPlant);
 						firstPlant = false;
 					}
@@ -232,7 +255,6 @@ public class TestPddl {
 				for(int j = 0; j < plantsPerSector; j++) {
 					listPlantsSector.add("p"+indexPlant);
 					if(firstPlant) {
-						System.out.println("first-plant tr"+(i+1)+" p"+indexPlant);
 						ret.add("first-plant tr"+(i+1)+" p"+indexPlant);
 						firstPlant = false;
 					}
@@ -263,7 +285,7 @@ public class TestPddl {
 		return ret;
 	}
 
-	private static List<String> generateLinks(int nPlants) {
+	/*private static List<String> generateLinks(int nPlants) {
 		List<Link> links = new ArrayList<Link>();
 		List<String> ret = new ArrayList<String>();
 		List<String> listLocations = new ArrayList<String>();
@@ -285,7 +307,7 @@ public class TestPddl {
 			ret.add(l.toString());
 		}
 		return ret;
-	}
+	}*/
 
 	private static String writeDomain(PrintWriter w) {
 		Domain domain = null;
@@ -395,10 +417,7 @@ public class TestPddl {
 			//ACTION 1
 		List<TypedSymbol> parameters = new ArrayList<TypedSymbol>();
 				//Parameters
-		TypedSymbol parameter = new TypedSymbol(new Symbol(Symbol.Kind.VARIABLE, "?b"));
-		parameter.addType(new Symbol(Symbol.Kind.TYPE, "tracker"));
-		parameters.add(parameter);
-		parameter = new TypedSymbol(new Symbol(Symbol.Kind.VARIABLE, "?h"));
+		TypedSymbol parameter = new TypedSymbol(new Symbol(Symbol.Kind.VARIABLE, "?h"));
 		parameter.addType(new Symbol(Symbol.Kind.TYPE, "hive"));
 		parameters.add(parameter);
 		parameter = new TypedSymbol(new Symbol(Symbol.Kind.VARIABLE, "?p"));
@@ -495,9 +514,6 @@ public class TestPddl {
 			//ACTION2
 		parameters = new ArrayList<TypedSymbol>();
 		//Parameters
-		parameter = new TypedSymbol(new Symbol(Symbol.Kind.VARIABLE, "?b"));
-		parameter.addType(new Symbol(Symbol.Kind.TYPE, "tracker"));
-		parameters.add(parameter);
 		parameter = new TypedSymbol(new Symbol(Symbol.Kind.VARIABLE, "?p"));
 		parameter.addType(new Symbol(Symbol.Kind.TYPE, "plant"));
 		parameters.add(parameter);
@@ -561,9 +577,6 @@ public class TestPddl {
 		//ACTION 3
 		parameters = new ArrayList<TypedSymbol>();
 		//Parameters
-		parameter = new TypedSymbol(new Symbol(Symbol.Kind.VARIABLE, "?b"));
-		parameter.addType(new Symbol(Symbol.Kind.TYPE, "tracker"));
-		parameters.add(parameter);
 		parameter = new TypedSymbol(new Symbol(Symbol.Kind.VARIABLE, "?from"));
 		parameter.addType(new Symbol(Symbol.Kind.TYPE, "plant"));
 		parameters.add(parameter);
@@ -681,9 +694,6 @@ public class TestPddl {
 		//ACTION 6
 		parameters = new ArrayList<TypedSymbol>();
 		//Parameters
-		parameter = new TypedSymbol(new Symbol(Symbol.Kind.VARIABLE, "?b"));
-		parameter.addType(new Symbol(Symbol.Kind.TYPE, "tracker"));
-		parameters.add(parameter);
 		parameter = new TypedSymbol(new Symbol(Symbol.Kind.VARIABLE, "?p"));
 		parameter.addType(new Symbol(Symbol.Kind.TYPE, "plant"));
 		parameters.add(parameter);
@@ -738,6 +748,15 @@ public class TestPddl {
 		effect.setAtom(atoms);
 		effectNot.addChild(effect);
 		effects.addChild(effectNot);
+					//effect3
+		effectNot = new Exp(Connective.NOT);
+		effect = new Exp(Connective.ATOM);
+		atoms = new ArrayList<Symbol>();
+		atoms.add(new Symbol(Symbol.Kind.PREDICATE, "healthy-plant"));
+		atoms.add(new Symbol(Symbol.Kind.VARIABLE, "?p"));
+		effect.setAtom(atoms);
+		effectNot.addChild(effect);
+		effects.addChild(effectNot);
 		
 		//AGENT
 		agent = new TypedSymbol(new Symbol(Symbol.Kind.AGENT, "b"));
@@ -754,9 +773,6 @@ public class TestPddl {
 				//ACTION 7
 		parameters = new ArrayList<TypedSymbol>();
 		//Parameters
-		parameter = new TypedSymbol(new Symbol(Symbol.Kind.VARIABLE, "?b"));
-		parameter.addType(new Symbol(Symbol.Kind.TYPE, "fumigator"));
-		parameters.add(parameter);
 		parameter = new TypedSymbol(new Symbol(Symbol.Kind.VARIABLE, "?h"));
 		parameter.addType(new Symbol(Symbol.Kind.TYPE, "hive"));
 		parameters.add(parameter);
@@ -865,9 +881,6 @@ public class TestPddl {
 				//ACTION 8
 		parameters = new ArrayList<TypedSymbol>();
 		//Parameters
-		parameter = new TypedSymbol(new Symbol(Symbol.Kind.VARIABLE, "?b"));
-		parameter.addType(new Symbol(Symbol.Kind.TYPE, "fumigator"));
-		parameters.add(parameter);
 		parameter = new TypedSymbol(new Symbol(Symbol.Kind.VARIABLE, "?h"));
 		parameter.addType(new Symbol(Symbol.Kind.TYPE, "hive"));
 		parameters.add(parameter);
@@ -962,9 +975,6 @@ public class TestPddl {
 			//ACTION 9
 		parameters = new ArrayList<TypedSymbol>();
 		//Parameters
-		parameter = new TypedSymbol(new Symbol(Symbol.Kind.VARIABLE, "?b"));
-		parameter.addType(new Symbol(Symbol.Kind.TYPE, "fumigator"));
-		parameters.add(parameter);
 		parameter = new TypedSymbol(new Symbol(Symbol.Kind.VARIABLE, "?h"));
 		parameter.addType(new Symbol(Symbol.Kind.TYPE, "hive"));
 		parameters.add(parameter);
@@ -1073,9 +1083,6 @@ public class TestPddl {
 				//ACTION 10
 		parameters = new ArrayList<TypedSymbol>();
 		//Parameters
-		parameter = new TypedSymbol(new Symbol(Symbol.Kind.VARIABLE, "?b"));
-		parameter.addType(new Symbol(Symbol.Kind.TYPE, "fumigator"));
-		parameters.add(parameter);
 		parameter = new TypedSymbol(new Symbol(Symbol.Kind.VARIABLE, "?h"));
 		parameter.addType(new Symbol(Symbol.Kind.TYPE, "hive"));
 		parameters.add(parameter);
@@ -1198,9 +1205,6 @@ public class TestPddl {
 			//ACTION 11
 		parameters = new ArrayList<TypedSymbol>();
 		//Parameters
-		parameter = new TypedSymbol(new Symbol(Symbol.Kind.VARIABLE, "?b"));
-		parameter.addType(new Symbol(Symbol.Kind.TYPE, "fumigator"));
-		parameters.add(parameter);
 		parameter = new TypedSymbol(new Symbol(Symbol.Kind.VARIABLE, "?h"));
 		parameter.addType(new Symbol(Symbol.Kind.TYPE, "hive"));
 		parameters.add(parameter);

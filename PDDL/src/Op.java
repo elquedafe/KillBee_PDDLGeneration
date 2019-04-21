@@ -130,7 +130,9 @@ public class Op implements Serializable {
      * @param preconds   The goal description that represents the preconditions of the operator.
      * @param effects    The goal description that represents the effects of the operator.
      */
-    public Op(final Symbol name, final TypedSymbol agent, final List<TypedSymbol> parameters, final Exp preconds, final Exp effects) {
+    public Op(final Symbol name, final TypedSymbol agent, 
+    		  final List<TypedSymbol> parameters,  final Exp preconds, 
+    		  final Exp effects) {
         this.name = name;
         this.agent = agent;
         this.parameters = parameters;

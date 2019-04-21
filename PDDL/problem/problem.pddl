@@ -1,29 +1,52 @@
-(define (problem tracker-bee)
-
-	(:domain Killbee)
-	
-	(:objects
-		b1 - tracker
-		p1 p2 - plant
-		h - hive
-		hloc l1 l2 - location
-		s - sector
-	)
-		
-	(:init
-		(directly-connected hloc l1)
-		(directly-connected l1 l2)
-		(directly-connected l2 hloc)
-		(at b1 hloc)
-		(in b1 h)
-		(free-sector s)
-		(tracker-ready-to-move b1)
-	)
-	
-	(:goal 	
-		(and	(at b1 hloc)
-				(in b1 h)
-				(sector-tracked s)
-		)
-	)
+(define (problem 3trackers-4plants)
+(:domain killbee)
+(:requirements)
+(:objects 
+  tr1 tr2 tr3  - tracker
+  fum1 fum2  - fumigator
+  h - hive
+  p1 p2 p3 p4  - plant
+)
+(:init
+  (first-plant tr1 p1)
+  (directly-connected p1 p2)
+  (directly-connected p1 h)
+  (directly-connected p2 p1)
+  (directly-connected p2 h)
+  (directly-connected h p1)
+  (directly-connected h p2)
+  (first-plant tr2 p3)
+  (directly-connected p3 h)
+  (directly-connected h p3)
+  (first-plant tr3 p4)
+  (directly-connected p4 h)
+  (directly-connected h p4)
+  (at tr1 h)
+  (tracker-ready-to-move tr1)
+  (at tr2 h)
+  (tracker-ready-to-move tr2)
+  (at tr3 h)
+  (tracker-ready-to-move tr3)
+  (at fum1 h)
+  (pesticide-tank-empty fum1)
+  (at fum2 h)
+  (pesticide-tank-empty fum2)
+  (healthy-plant p1)
+  (healthy-plant p2)
+  (healthy-plant p3)
+  (healthy-plant p4)
+)
+(:goal   (and (at tr1 h)
+  (at tr2 h)
+  (at tr3 h)
+  (at fum1 h)
+  (at fum2 h)
+  (plant-analyzed p1)
+  (healthy-plant p1)
+  (plant-analyzed p2)
+  (healthy-plant p2)
+  (plant-analyzed p3)
+  (healthy-plant p3)
+  (plant-analyzed p4)
+  (healthy-plant p4)))
 )

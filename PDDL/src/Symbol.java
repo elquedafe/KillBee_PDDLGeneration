@@ -107,7 +107,7 @@ public class Symbol implements Serializable {
          */
         PROBLEM,
         /**
-         * 
+         * The agent symbol.
          */
         AGENT
     }
