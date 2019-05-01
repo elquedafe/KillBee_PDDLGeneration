@@ -152,20 +152,16 @@ public class BeeHive {
 	 * @return true if all bees are powered off false if not
 	 */
 	public boolean thereAreActiveBees() {
-		boolean thereAreActiveBees = false;
+		boolean thereAreActiveBees = true;
 		
 		for(int i = 0; i<this.getScoutingBeesList().length; i++) {
-			if(!this.getScoutingBeesList()[i].isPowerOff())
-				thereAreActiveBees = true;
-			else
-				return false;
+			if(this.getScoutingBeesList()[i].isPowerOff())
+				 return false;
 		}
 		for(int j = 0; j<this.getFumigatorBeesList().length; j++) {
-			if(!this.getFumigatorBeesList()[j].isPowerOff())
-				thereAreActiveBees = true;
-			else return false;
+			if(this.getFumigatorBeesList()[j].isPowerOff())
+				return false;
 		}
-		
 		return thereAreActiveBees;
 	}
 	
