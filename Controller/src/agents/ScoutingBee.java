@@ -1,11 +1,16 @@
 package agents;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.Writer;
+
 import functionality.Action;
 import structuralElements.Sector;
 
 /**
  * Class that represents the scouting bees of our system
- * @author Lukasz Marek Olszewski, Laura López Pérez, Álvaro Luis Martínez, Miguel Lagares Velasco
+ * @author Lukasz Marek Olszewski, Laura Lï¿½pez Pï¿½rez, ï¿½lvaro Luis Martï¿½nez, Miguel Lagares Velasco
  *
  */
 public class ScoutingBee implements Runnable {
@@ -30,10 +35,11 @@ public class ScoutingBee implements Runnable {
 	}
 	
 	public void run() {
+		Writer writer = null;
 		
 		while(!powerOff) { 
-			// aquí hay que buscar una manera para que el hilo se quede parado hasta que tenga una acción que realizar diferente de null
-			// porque sino seguirá la ejecución y dentro del switch entra en default mostrando un error de que esa acción es errónea
+			// aquï¿½ hay que buscar una manera para que el hilo se quede parado hasta que tenga una acciï¿½n que realizar diferente de null
+			// porque sino seguirï¿½ la ejecuciï¿½n y dentro del switch entra en default mostrando un error de que esa acciï¿½n es errï¿½nea
 			switch(action.getActionName()) {
 				case "fly-to-first-plant":
 					try {
@@ -55,9 +61,20 @@ public class ScoutingBee implements Runnable {
 						if(sectorAssigned.getPlantsSector()[i].getIdPlant() == action.getPlantId()
 								&& !sectorAssigned.getPlantsSector()[i].isAnalyzed()) { 
 							try {
+								//Analyze plant
 								sectorAssigned.getPlantsSector()[i].analyzePlant(action.getActionTimeExecution());
+								//Set that plant is analyzed
 								sectorAssigned.getPlantsSector()[i].setAnalyzed(true);
+								//Check if plant is infected
+								if(sectorAssigned.getPlantsSector()[i].isInfected()) {
+									//Write a new line in infected file with plant id
+									writer = new BufferedWriter(new FileWriter("infectedPlants.txt", true));
+									writer.append(System.lineSeparator()+sectorAssigned.getPlantsSector()[i].getIdPlant()); 
+									writer.close();
+								}
 							} catch (InterruptedException e) {
+								e.printStackTrace();
+							} catch (IOException e) {
 								e.printStackTrace();
 							}
 						}
@@ -128,7 +145,7 @@ public class ScoutingBee implements Runnable {
 	 * @param time that costs the execution of the action
 	 * @throws InterruptedException 
 	 */
-	public void flyToFirstPlant(int time) throws InterruptedException { // Este método más adelante puede ser usado para introducir tasas de error para que haya un fallo y se necesite replanificación
+	public void flyToFirstPlant(int time) throws InterruptedException { // Este mï¿½todo mï¿½s adelante puede ser usado para introducir tasas de error para que haya un fallo y se necesite replanificaciï¿½n
 		Thread.sleep(time);
 	}
 	
@@ -137,7 +154,7 @@ public class ScoutingBee implements Runnable {
 	 * @param time that costs the execution of the action
 	 * @throws InterruptedException 
 	 */
-	public void goToNextPlant(int time) throws InterruptedException { // Este método más adelante puede ser usado para introducir tasas de error para que haya un fallo y se necesite replanificación
+	public void goToNextPlant(int time) throws InterruptedException { // Este mï¿½todo mï¿½s adelante puede ser usado para introducir tasas de error para que haya un fallo y se necesite replanificaciï¿½n
 		Thread.sleep(time);
 	}
 	
@@ -146,7 +163,7 @@ public class ScoutingBee implements Runnable {
 	 * @param time that costs the execution of the action
 	 * @throws InterruptedException
 	 */
-	public void trackerBackHome(int time) throws InterruptedException { // Este método más adelante puede ser usado para introducir tasas de error para que haya un fallo y se necesite replanificación
+	public void trackerBackHome(int time) throws InterruptedException { // Este mï¿½todo mï¿½s adelante puede ser usado para introducir tasas de error para que haya un fallo y se necesite replanificaciï¿½n
 		Thread.sleep(time);
 	}
 	

@@ -1,8 +1,10 @@
 package structuralElements;
 
+import perception.InfectionDetection;
+
 /**
  * Class that represents the plants of the crop
- * @author Lukasz Marek Olszewski, Laura López Pérez, Álvaro Luis Martínez, Miguel Lagares Velasco
+ * @author Lukasz Marek Olszewski, Laura Lï¿½pez Pï¿½rez, ï¿½lvaro Luis Martï¿½nez, Miguel Lagares Velasco
  *
  */
 public class Plant {
@@ -77,10 +79,12 @@ public class Plant {
 	/**
 	 * Method that simulate plant anlyzation
 	 * @param time that costs the execution of the action
+	 * @return true if the plant is infected
 	 * @throws InterruptedException 
 	 */
 	public void analyzePlant(int time) throws InterruptedException {
 		Thread.sleep(time);
+		this.infected = InfectionDetection.isInfected(this);
 	}
 	
 	/**
