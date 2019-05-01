@@ -5,7 +5,7 @@ import structuralElements.PesticideTank;
 
 /**
  * Class that represents the hive (administration point) of our system
- * @author Lukasz Marek Olszewski, Laura LÛpez PÈrez, ¡lvaro Luis MartÌnez, Miguel Lagares Velasco
+ * @author Lukasz Marek Olszewski, Laura L√≥pez P√©rez, √Ålvaro Luis Mart√≠nez, Miguel Lagares Velasco
  *
  */
 public class BeeHive {
@@ -157,10 +157,13 @@ public class BeeHive {
 		for(int i = 0; i<this.getScoutingBeesList().length; i++) {
 			if(!this.getScoutingBeesList()[i].isPowerOff())
 				thereAreActiveBees = true;
+			else
+				return false;
 		}
 		for(int j = 0; j<this.getFumigatorBeesList().length; j++) {
 			if(!this.getFumigatorBeesList()[j].isPowerOff())
 				thereAreActiveBees = true;
+			else return false;
 		}
 		
 		return thereAreActiveBees;

@@ -8,7 +8,7 @@ import structuralElements.Crop;
 
 /**
  * Class responsible for the supervision of the agents actions during the simulation time execution
- * @author Lukasz Marek Olszewski, Laura López Pérez, Álvaro Luis Martínez, Miguel Lagares Velasco
+ * @author Lukasz Marek Olszewski, Laura Lï¿½pez Pï¿½rez, ï¿½lvaro Luis Martï¿½nez, Miguel Lagares Velasco
  *
  */
 public class Controller implements Runnable {
