@@ -153,14 +153,14 @@ public class BeeHive {
 	 */
 	public boolean thereAreActiveBees() {
 		for(int i = 0; i<this.getScoutingBeesList().length; i++) {
-			if(this.getScoutingBeesList()[i].isPowerOff())
-				 return false;
+			if(!this.getScoutingBeesList()[i].isPowerOff())
+				 return true;
 		}
 		for(int j = 0; j<this.getFumigatorBeesList().length; j++) {
-			if(this.getFumigatorBeesList()[j].isPowerOff())
-				return false;
+			if(!this.getFumigatorBeesList()[j].isPowerOff())
+				return true;
 		}
-		return true;
+		return false;
 	}
 	
 }
