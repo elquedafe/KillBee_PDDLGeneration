@@ -5,7 +5,7 @@ import java.util.regex.Pattern;
 
 /**
  * Class that represents the actions that are going to berform the bees and the bee hive
- * @author Lukasz Marek Olszewski, Laura Lï¿½pez Pï¿½rez, ï¿½lvaro Luis Martï¿½nez, Miguel Lagares Velasco
+ * @author Lukasz Marek Olszewski, Laura López Pérez, Álvaro Luis Martínez, Miguel Lagares Velasco
  *
  */
 public class Action {

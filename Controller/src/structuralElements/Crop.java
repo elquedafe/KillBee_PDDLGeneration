@@ -20,7 +20,7 @@ public class Crop {
 			Plant plants[] = new Plant[numPlantsSector];
 			//Creation of the plants that have each sector
 			for(int j=1; j<=numPlantsSector; j++) {
-				Plant plant = new Plant("p"+numPlantsSector, "s"+numSectors, false, true);
+				Plant plant = new Plant("p"+numPlantsSector, "s"+numSectors, false, false);
 				plants[j-1] = plant;
 			}
 			

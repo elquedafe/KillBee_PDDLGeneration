@@ -5,7 +5,7 @@ import structuralElements.PesticideTank;
 
 /**
  * Class that represents the hive (administration point) of our system
- * @author Lukasz Marek Olszewski, Laura L√≥pez P√©rez, √Ålvaro Luis Mart√≠nez, Miguel Lagares Velasco
+ * @author Lukasz Marek Olszewski, Laura LÛpez PÈrez, ¡lvaro Luis MartÌnez, Miguel Lagares Velasco
  *
  */
 public class BeeHive {
@@ -17,7 +17,6 @@ public class BeeHive {
 	private ScoutingBee scoutingBeesList[];
 	private FumigatorBee fumigatorBeesList[];
 	private Crop crop;
-	private int numSector = 0;
 	
 	/**
 	 * Bee hive constructor
@@ -35,7 +34,7 @@ public class BeeHive {
 		int counter = 0;
 		
 		do {
-			ScoutingBee scoutingBee = new ScoutingBee("tr" + numScoutingBees, null, false, true, null);
+			ScoutingBee scoutingBee = new ScoutingBee("tr" + numScoutingBees, null, false, true, null, false);
 			scoutingBeesList[counter] = scoutingBee;
 			Thread threadScoutingBee = new Thread(scoutingBeesGroup, scoutingBee, "tr" + numScoutingBees);
 			threadScoutingBee.start();
@@ -51,7 +50,7 @@ public class BeeHive {
 		counter = 0;
 		
 		do {
-			FumigatorBee  fumigatorBee = new FumigatorBee(this, "fum" + numFumigatorBees, null, new PesticideTank(false), false, true, null);
+			FumigatorBee  fumigatorBee = new FumigatorBee(this, "fum" + numFumigatorBees, null, new PesticideTank(false), false, true, null, false);
 			fumigatorBeesList[counter] = fumigatorBee;
 			Thread threadFumigatorBee = new Thread(fumigatorBeesGroup, fumigatorBee, "fum" + numFumigatorBees);
 			threadFumigatorBee.start();
@@ -125,14 +124,12 @@ public class BeeHive {
 	 * Method that assign sector to scouting bee
 	 * @param scoutingBee scouting bee object
 	 */
-	public void assignSector(ScoutingBee scoutingBee) {
-		// Sector assignment to the scouting bees, one sector can be assigned to more than one scouting bee
-		if(numSector < crop.getSectors().length) 
-			numSector++;
-		else 
-			numSector = 0;
-		
-		scoutingBee.setSectorAssigned(crop.getSectors()[numSector]);
+	public void assignSector(ScoutingBee scoutingBee, String sector) {
+		for(int i=0; i<crop.getSectors().length; i++) {
+			if(crop.getSectors()[i].getIdSector() == sector) {
+				scoutingBee.setSectorAssigned(crop.getSectors()[i]);
+			}
+		}
 	}
 	
 	/**

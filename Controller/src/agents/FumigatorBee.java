@@ -18,13 +18,14 @@ public class FumigatorBee implements Runnable {
 	private Action action;
 	private boolean powerOff;
 	private boolean inHive;
+	private Object hasWorkToDo;
 	
 	/**
 	 * Fumigator bee constructor
 	 * @param idBee string that identify the fumigator bee
 	 * @param pesticideTank pesticide tank object
 	 */
-	public FumigatorBee(BeeHive beeHive, String idBee, Sector infectedLocation, PesticideTank pesticideTank, boolean powerOff, boolean inHive, Action action) {
+	public FumigatorBee(BeeHive beeHive, String idBee, Sector infectedLocation, PesticideTank pesticideTank, boolean powerOff, boolean inHive, Action action, Object hasWorkToDo) {
 		this.beeHive = beeHive;
 		this.idBee = idBee;
 		this.infectedLocation = infectedLocation;
@@ -32,13 +33,19 @@ public class FumigatorBee implements Runnable {
 		this.action = action;
 		this.powerOff = powerOff;
 		this.inHive = inHive;
+		this.hasWorkToDo = hasWorkToDo;
 	}
 	
 	public void run() {
 		
 		while(powerOff) { 
-			// aquí hay que buscar una manera para que el hilo se quede parado hasta que tenga una acción que realizar diferente de null
-			// porque sino seguirá la ejecución y dentro del switch entra en default mostrando un error de que esa acción es errónea
+			
+			try {
+				hasWorkToDo.wait();
+			} catch (InterruptedException e3) {
+				e3.printStackTrace();
+			}
+			
 			switch(action.getActionName()) {
 				case "fill-pesticide-tank":
 					try {
@@ -154,6 +161,14 @@ public class FumigatorBee implements Runnable {
 	 */
 	public void setInHive(boolean inHive) {
 		this.inHive = inHive;
+	}
+	
+	/**
+	 * Method that returns if the bee have work to do
+	 * @return true if the bee have work false if not
+	 */
+	public Object getHasWorkToDo() {
+		return hasWorkToDo;
 	}
 
 	/**

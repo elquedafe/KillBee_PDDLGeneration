@@ -1,4 +1,4 @@
-import java.io.BufferedReader;
+Ôªøimport java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -18,7 +18,7 @@ import structuralElements.Crop;
 
 /**
  * Class that puts the system into operation and waits while there are active tasks
- * @author Lukasz Marek Olszewski, Laura LÛpez PÈrez, ¡lvaro Luis MartÌnez, Miguel Lagares Velasco
+ * @author Lukasz Marek Olszewski, Laura L√≥pez P√©rez, √Ålvaro Luis Mart√≠nez, Miguel Lagares Velasco
  *
  */
 public class Main {

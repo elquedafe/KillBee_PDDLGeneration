@@ -1,4 +1,4 @@
-package agents;
+﻿package agents;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;
@@ -10,7 +10,7 @@ import structuralElements.Sector;
 
 /**
  * Class that represents the scouting bees of our system
- * @author Lukasz Marek Olszewski, Laura L�pez P�rez, �lvaro Luis Mart�nez, Miguel Lagares Velasco
+ * @author Lukasz Marek Olszewski, Laura López Pérez, Álvaro Luis Martínez, Miguel Lagares Velasco
  *
  */
 public class ScoutingBee implements Runnable {
@@ -20,26 +20,33 @@ public class ScoutingBee implements Runnable {
 	private Action action;
 	private boolean powerOff;
 	private boolean inHive;
+	private Object hasWorkToDo;
 	
 	/**
 	 * Scouting bee constructor
 	 * @param idBee string that identify the scouting bee
 	 * @param sectorAssigned sector object that have assigned the scouting bee
 	 */
-	public ScoutingBee(String idBee, Sector sectorAssigned, boolean powerOff, boolean inHive, Action action) {
+	public ScoutingBee(String idBee, Sector sectorAssigned, boolean powerOff, boolean inHive, Action action, Object hasWorkToDo) {
 		this.idBee = idBee;
 		this.sectorAssigned = sectorAssigned;
 		this.action = action;
 		this.powerOff = powerOff;
 		this.inHive = inHive;
+		this.hasWorkToDo = hasWorkToDo;
 	}
 	
 	public void run() {
 		Writer writer = null;
 		
 		while(!powerOff) { 
-			// aqu� hay que buscar una manera para que el hilo se quede parado hasta que tenga una acci�n que realizar diferente de null
-			// porque sino seguir� la ejecuci�n y dentro del switch entra en default mostrando un error de que esa acci�n es err�nea
+			
+			try {
+				hasWorkToDo.wait();
+			} catch (InterruptedException e3) {
+				e3.printStackTrace();
+			}
+			
 			switch(action.getActionName()) {
 				case "fly-to-first-plant":
 					try {
@@ -75,19 +82,6 @@ public class ScoutingBee implements Runnable {
 							} catch (InterruptedException e) {
 								e.printStackTrace();
 							} catch (IOException e) {
-								e.printStackTrace();
-							}
-						}
-					}
-					break;
-				case "analyze-last-plant":
-					for(int i = 0; i<sectorAssigned.getPlantsSector().length; i++) { 
-						if(sectorAssigned.getPlantsSector()[i].getIdPlant() == action.getPlantId()
-								&& !sectorAssigned.getPlantsSector()[i].isAnalyzed()) {
-							try {
-								sectorAssigned.getPlantsSector()[i].analyzePlant(action.getActionTimeExecution());
-								sectorAssigned.getPlantsSector()[i].setAnalyzed(true);
-							} catch (InterruptedException e) {
 								e.printStackTrace();
 							}
 						}
@@ -145,7 +139,7 @@ public class ScoutingBee implements Runnable {
 	 * @param time that costs the execution of the action
 	 * @throws InterruptedException 
 	 */
-	public void flyToFirstPlant(int time) throws InterruptedException { // Este m�todo m�s adelante puede ser usado para introducir tasas de error para que haya un fallo y se necesite replanificaci�n
+	public void flyToFirstPlant(int time) throws InterruptedException { // Este método más adelante puede ser usado para introducir tasas de error para que haya un fallo y se necesite replanificación
 		Thread.sleep(time);
 	}
 	
@@ -154,7 +148,7 @@ public class ScoutingBee implements Runnable {
 	 * @param time that costs the execution of the action
 	 * @throws InterruptedException 
 	 */
-	public void goToNextPlant(int time) throws InterruptedException { // Este m�todo m�s adelante puede ser usado para introducir tasas de error para que haya un fallo y se necesite replanificaci�n
+	public void goToNextPlant(int time) throws InterruptedException { // Este método más adelante puede ser usado para introducir tasas de error para que haya un fallo y se necesite replanificación
 		Thread.sleep(time);
 	}
 	
@@ -163,7 +157,7 @@ public class ScoutingBee implements Runnable {
 	 * @param time that costs the execution of the action
 	 * @throws InterruptedException
 	 */
-	public void trackerBackHome(int time) throws InterruptedException { // Este m�todo m�s adelante puede ser usado para introducir tasas de error para que haya un fallo y se necesite replanificaci�n
+	public void trackerBackHome(int time) throws InterruptedException { // Este método más adelante puede ser usado para introducir tasas de error para que haya un fallo y se necesite replanificación
 		Thread.sleep(time);
 	}
 	
@@ -181,6 +175,14 @@ public class ScoutingBee implements Runnable {
 	 */
 	public void setInHive(boolean inHive) {
 		this.inHive = inHive;
+	}
+	
+	/**
+	 * Method that returns if the bee have work to do
+	 * @return true if the bee have work false if not
+	 */
+	public Object getHasWorkToDo() {
+		return hasWorkToDo;
 	}
 
 	/**
