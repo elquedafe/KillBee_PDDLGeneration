@@ -1,4 +1,4 @@
-Ôªøpackage controller.agents;
+package controller.agents;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -8,7 +8,7 @@ import controller.structuralElements.Crop;
 
 /**
  * Class responsible for the supervision of the agents actions during the simulation time execution
- * @author Lukasz Marek Olszewski, Laura L√≥pez P√©rez, √Ålvaro Luis Mart√≠nez, Miguel Lagares Velasco
+ * @author Lukasz Marek Olszewski, Laura LÛpez PÈrez, ¡lvaro Luis MartÌnez, Miguel Lagares Velasco
  *
  */
 public class Controller implements Runnable {
@@ -59,9 +59,6 @@ public class Controller implements Runnable {
 					case "tracker-back-home":
 						assignActionToScoutingBee(action);
 						break;
-					/*case "receive-infected-location":
-						
-						break;*/
 					case "fill-pesticide-tank":
 						assignActionToFumigatorBee(action);
 						break;

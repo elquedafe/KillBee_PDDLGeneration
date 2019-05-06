@@ -1,4 +1,4 @@
-Ôªøpackage controller;
+package controller;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -20,11 +20,12 @@ import PDDL.TestMaPDDL;
 
 import controller.agents.BeeHive;
 import controller.agents.Controller;
+import controller.functionality.PlanReader;
 import controller.structuralElements.Crop;
 
 /**
  * Class that puts the system into operation and waits while there are active tasks
- * @author Lukasz Marek Olszewski, Laura L√≥pez P√©rez, √Ålvaro Luis Mart√≠nez, Miguel Lagares Velasco
+ * @author Lukasz Marek Olszewski, Laura LÛpez PÈrez, ¡lvaro Luis MartÌnez, Miguel Lagares Velasco
  *
  */
 public class Main {
@@ -170,9 +171,9 @@ public class Main {
 				FileWriter writer = new FileWriter("planJSON.json");
 				writer.write(json);
 				
-				writer.close();
+				writer.close();*/
 				scanner.close();
-				lineScanner.close();*/
+				lineScanner.close();
 				bufferedReader.close();
 				
 			} catch (FileNotFoundException e1) {
@@ -181,10 +182,15 @@ public class Main {
 				e.printStackTrace();
 			}
 			
-			// Initializarion of the controller
+			// Initialization of the controller
 			Controller controller = new Controller(beeHive, crop, planMap);
 			Thread threadController = new Thread(controller);
 			threadController.start();
+			
+			// Initialization of planReader thread
+			PlanReader planReader = new PlanReader(planMap);
+			Thread threadPlanReader = new Thread(planReader);
+			threadPlanReader.start();
 			
 			while(threadController.isAlive()) { // The main thread waits while the controller of the system is alive
 				try {

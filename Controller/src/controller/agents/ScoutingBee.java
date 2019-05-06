@@ -1,6 +1,5 @@
-Ôªøpackage controller.agents;
+package controller.agents;
 
-import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -13,7 +12,7 @@ import controller.structuralElements.Sector;
 
 /**
  * Class that represents the scouting bees of our system
- * @author Lukasz Marek Olszewski, Laura L√≥pez P√©rez, √Ålvaro Luis Mart√≠nez, Miguel Lagares Velasco
+ * @author Lukasz Marek Olszewski, Laura LÛpez PÈrez, ¡lvaro Luis MartÌnez, Miguel Lagares Velasco
  *
  */
 public class ScoutingBee implements Runnable {
@@ -55,20 +54,25 @@ public class ScoutingBee implements Runnable {
 			switch(action.getActionName()) {
 				case "fly-to-first-plant":
 					try {
+						System.out.println(this.getIdBee()+": "+action.getActionName()+" "+action.getPlantId());
 						this.setInHive(false);
 						this.flyToFirstPlant(action.getActionTimeExecution());
+						System.out.println(this.getIdBee()+": "+action.getActionName()+" "+action.getPlantId()+" completed");
 					} catch (InterruptedException e2) {
 						e2.printStackTrace();
 					}
 					break;
 				case "go-to-next-plant":
 					try {
+						System.out.println(this.getIdBee()+": "+action.getActionName()+" "+action.getPlantId());
 						this.goToNextPlant(action.getActionTimeExecution());
+						System.out.println(this.getIdBee()+": "+action.getActionName()+" "+action.getPlantId()+" completed");
 					} catch (InterruptedException e1) {
 						e1.printStackTrace();
 					}
 					break;
 				case "analyze-plant":
+					System.out.println(this.getIdBee()+": "+action.getActionName()+" "+action.getPlantId());
 					for(int i = 0; i<sectorAssigned.getPlantsSector().length; i++) {
 						if(sectorAssigned.getPlantsSector()[i].getIdPlant() == action.getPlantId()
 								&& !sectorAssigned.getPlantsSector()[i].isAnalyzed()) { 
@@ -106,6 +110,8 @@ public class ScoutingBee implements Runnable {
 									//Write a new line in infected file with plant id
 									
 								}
+								System.out.println(this.getIdBee()+": "+action.getActionName()+" "+action.getPlantId()+" completed infected: "+sectorAssigned.getPlantsSector()[i].isInfected());
+
 							} catch (InterruptedException e) {
 								e.printStackTrace();
 							}
@@ -114,8 +120,10 @@ public class ScoutingBee implements Runnable {
 					break;
 				case "tracker-back-home":
 					try {
+						System.out.println(this.getIdBee()+": "+action.getActionName()+" "+action.getPlantId());
 						this.trackerBackHome(action.getActionTimeExecution());
 						this.setInHive(true);
+						System.out.println(this.getIdBee()+": "+action.getActionName()+" "+action.getPlantId()+" completed");
 					} catch (InterruptedException e) {
 						e.printStackTrace();
 					}
@@ -164,7 +172,7 @@ public class ScoutingBee implements Runnable {
 	 * @param time that costs the execution of the action
 	 * @throws InterruptedException 
 	 */
-	public void flyToFirstPlant(int time) throws InterruptedException { // Este m√©todo m√°s adelante puede ser usado para introducir tasas de error para que haya un fallo y se necesite replanificaci√≥n
+	public void flyToFirstPlant(int time) throws InterruptedException { // Este mÈtodo m·s adelante puede ser usado para introducir tasas de error para que haya un fallo y se necesite replanificaciÛn
 		Thread.sleep(time);
 	}
 	
@@ -173,7 +181,7 @@ public class ScoutingBee implements Runnable {
 	 * @param time that costs the execution of the action
 	 * @throws InterruptedException 
 	 */
-	public void goToNextPlant(int time) throws InterruptedException { // Este m√©todo m√°s adelante puede ser usado para introducir tasas de error para que haya un fallo y se necesite replanificaci√≥n
+	public void goToNextPlant(int time) throws InterruptedException { // Este mÈtodo m·s adelante puede ser usado para introducir tasas de error para que haya un fallo y se necesite replanificaciÛn
 		Thread.sleep(time);
 	}
 	
@@ -182,7 +190,7 @@ public class ScoutingBee implements Runnable {
 	 * @param time that costs the execution of the action
 	 * @throws InterruptedException
 	 */
-	public void trackerBackHome(int time) throws InterruptedException { // Este m√©todo m√°s adelante puede ser usado para introducir tasas de error para que haya un fallo y se necesite replanificaci√≥n
+	public void trackerBackHome(int time) throws InterruptedException { // Este mÈtodo m·s adelante puede ser usado para introducir tasas de error para que haya un fallo y se necesite replanificaciÛn
 		Thread.sleep(time);
 	}
 	

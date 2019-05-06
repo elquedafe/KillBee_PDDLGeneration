@@ -49,20 +49,25 @@ public class FumigatorBee implements Runnable {
 			switch(action.getActionName()) {
 				case "fill-pesticide-tank":
 					try {
+						System.out.println(this.getIdBee()+": "+action.getActionName());
 						beeHive.fillTank(pesticideTank, action.getActionTimeExecution());
+						System.out.println(this.getIdBee()+": "+action.getActionName()+" completed");
 					} catch (InterruptedException e2) {
 						e2.printStackTrace();
 					}
 					break;
 				case "go-to-infected-location":
 					try {
+						System.out.println(this.getIdBee()+": "+action.getActionName()+" "+action.getPlantId());
 						this.setInHive(false);
 						this.goToInfectedLocation(action.getActionTimeExecution());
+						System.out.println(this.getIdBee()+": "+action.getActionName()+" "+action.getPlantId()+" completed");
 					} catch (InterruptedException e1) {
 						e1.printStackTrace();
 					}
 					break;
 				case "fumigate":
+					System.out.println(this.getIdBee()+": "+action.getActionName()+" "+action.getPlantId());
 					for(int i = 0; i<infectedLocation.getPlantsSector().length; i++) {
 						if(infectedLocation.getPlantsSector()[i].getIdPlant() == action.getPlantId()
 								&& infectedLocation.getPlantsSector()[i].isInfected()) { 
@@ -74,11 +79,14 @@ public class FumigatorBee implements Runnable {
 							}
 						}
 					}
+					System.out.println(this.getIdBee()+": "+action.getActionName()+" "+action.getPlantId()+" completed");
 					break;
 				case "fumigator-back-home":
 					try {
+						System.out.println(this.getIdBee()+": "+action.getActionName()+" "+action.getPlantId());
 						this.fumigatorBackHome(action.getActionTimeExecution());
 						this.setInHive(true);
+						System.out.println(this.getIdBee()+": "+action.getActionName()+" "+action.getPlantId()+" completed");
 					} catch (InterruptedException e) {
 						e.printStackTrace();
 					}
