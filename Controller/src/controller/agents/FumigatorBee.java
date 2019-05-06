@@ -1,12 +1,12 @@
-package agents;
+package controller.agents;
 
-import functionality.Action;
-import structuralElements.PesticideTank;
-import structuralElements.Sector;
+import controller.functionality.Action;
+import controller.structuralElements.PesticideTank;
+import controller.structuralElements.Sector;
 
 /**
  * Class that represents the fumigating bees of our system
- * @author Lukasz Marek Olszewski, Laura López Pérez, Álvaro Luis Martínez, Miguel Lagares Velasco
+ * @author Lukasz Marek Olszewski, Laura Lï¿½pez Pï¿½rez, ï¿½lvaro Luis Martï¿½nez, Miguel Lagares Velasco
  *
  */
 public class FumigatorBee implements Runnable {
@@ -134,7 +134,7 @@ public class FumigatorBee implements Runnable {
 	 * @param time that costs the execution of the action
 	 * @throws InterruptedException 
 	 */
-	public void goToInfectedLocation(int time) throws InterruptedException { // Este método más adelante puede ser usado para introducir tasas de error para que haya un fallo y se necesite replanificación
+	public void goToInfectedLocation(int time) throws InterruptedException { // Este mï¿½todo mï¿½s adelante puede ser usado para introducir tasas de error para que haya un fallo y se necesite replanificaciï¿½n
 		Thread.sleep(time);
 	}
 	
@@ -143,7 +143,7 @@ public class FumigatorBee implements Runnable {
 	 * @param time that costs the execution of the action
 	 * @throws InterruptedException
 	 */
-	public void fumigatorBackHome(int time) throws InterruptedException { // Este método más adelante puede ser usado para introducir tasas de error para que haya un fallo y se necesite replanificación
+	public void fumigatorBackHome(int time) throws InterruptedException { // Este mï¿½todo mï¿½s adelante puede ser usado para introducir tasas de error para que haya un fallo y se necesite replanificaciï¿½n
 		Thread.sleep(time);
 	}
 	

@@ -1,10 +1,10 @@
-package structuralElements;
+package controller.structuralElements;
 
-import perception.InfectionDetection;
+import controller.perception.InfectionDetection;
 
 /**
  * Class that represents the plants of the crop
- * @author Lukasz Marek Olszewski, Laura López Pérez, Álvaro Luis Martínez, Miguel Lagares Velasco
+ * @author Lukasz Marek Olszewski, Laura Lï¿½pez Pï¿½rez, ï¿½lvaro Luis Martï¿½nez, Miguel Lagares Velasco
  *
  */
 public class Plant {

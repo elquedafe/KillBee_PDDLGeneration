@@ -1,11 +1,11 @@
-package agents;
+package controller.agents;
 
-import structuralElements.Crop;
-import structuralElements.PesticideTank;
+import controller.structuralElements.Crop;
+import controller.structuralElements.PesticideTank;
 
 /**
  * Class that represents the hive (administration point) of our system
- * @author Lukasz Marek Olszewski, Laura López Pérez, Álvaro Luis Martínez, Miguel Lagares Velasco
+ * @author Lukasz Marek Olszewski, Laura Lï¿½pez Pï¿½rez, ï¿½lvaro Luis Martï¿½nez, Miguel Lagares Velasco
  *
  */
 public class BeeHive {
@@ -34,7 +34,7 @@ public class BeeHive {
 		int counter = 0;
 		
 		do {
-			ScoutingBee scoutingBee = new ScoutingBee("tr" + numScoutingBees, null, false, true, null, false);
+			ScoutingBee scoutingBee = new ScoutingBee("tr" + numScoutingBees, null, false, true, null, false, this);
 			scoutingBeesList[counter] = scoutingBee;
 			Thread threadScoutingBee = new Thread(scoutingBeesGroup, scoutingBee, "tr" + numScoutingBees);
 			threadScoutingBee.start();

@@ -1,8 +1,12 @@
-﻿import java.io.BufferedReader;
+﻿package controller;
+
+import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -10,11 +14,13 @@ import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import com.google.gson.*;
+import PDDL.TestMaPDDL;
 
-import agents.BeeHive;
-import agents.Controller;
-import structuralElements.Crop;
+//import com.google.gson.*;
+
+import controller.agents.BeeHive;
+import controller.agents.Controller;
+import controller.structuralElements.Crop;
 
 /**
  * Class that puts the system into operation and waits while there are active tasks
@@ -37,6 +43,74 @@ public class Main {
 			numScoutingBees = Integer.parseInt(args[2]);
 			numFumigatorBees = Integer.parseInt(args[3]);
 			fileName = args[4];
+			
+			File fDom = new File("domain/domain.pddl");
+			File fProb = new File("problem/problem.pddl");
+			Scanner sc = null;
+		
+			//Check file domain
+			if(fDom.isFile() && fDom.exists())
+				System.out.println("Domain exists at: "+fDom.getName());
+				
+			FileWriter fwDom = null;
+			try {
+				fwDom = new FileWriter(fDom);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			PrintWriter wDom = new PrintWriter(fwDom);
+			
+			//Check file problem
+			if(fProb.isFile() && fProb.exists())
+				System.out.println("Problem exists at: "+fProb.getName());
+				
+			FileWriter fwProb = null;
+			try {
+				fwProb = new FileWriter(fProb);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			PrintWriter wProb = new PrintWriter(fwProb);
+			
+			//************DOMAIN************//
+			String domainString = TestMaPDDL.writeDomain(wDom);
+			wDom.print(domainString);
+			wDom.close();
+			try {
+				fwDom.close();
+			} catch (IOException e1) {
+				e1.printStackTrace();
+			}
+			//System.out.println(domainString);
+			
+			
+			//************PROBELM************//
+			/*sc = new Scanner(System.in);
+			
+			System.out.println("Tracker bees number: ");
+			int nTrackers = sc.nextInt();
+			//int nTrackers = 3;
+			System.out.println("Fumigator bees number: ");
+			int nFumigators = sc.nextInt();
+			//int nFumigators = 3;
+			System.out.println("Plants number: ");
+			int nPlants = sc.nextInt();
+			//int nPlants = 7;
+			*/
+			String name = numScoutingBees+"trackers-"+(numSectors*numPlantsSector)+"plants";
+			String problemString = TestMaPDDL.writeProblem(wDom, name, numScoutingBees, numFumigatorBees, (numSectors*numPlantsSector));
+			wProb.print(problemString);
+			wProb.close();
+			//System.out.println(problemString);
+			
+			// LLAMADA A ADP
+			try {
+				// Poner los argumentos!!!
+				String [] cmd = {"./","-s","-t", "10"}; //Comando para ejecutar adp
+				Runtime.getRuntime().exec(cmd);
+			} catch (IOException ioe) {
+				System.out.println (ioe);
+			}
 			
 			// Initialization of the crop and its elements
 			Crop crop = new Crop(numSectors, numPlantsSector);
@@ -88,7 +162,7 @@ public class Main {
 				planMap.remove("Plan"); // Remove of the last line of the plan, is not an action
 				
 				// JSON parser
-				Gson gson = new Gson(); 
+				/*Gson gson = new Gson(); 
 				String json = gson.toJson(planMap);
 				
 				System.out.println(json);
@@ -98,7 +172,7 @@ public class Main {
 				
 				writer.close();
 				scanner.close();
-				lineScanner.close();
+				lineScanner.close();*/
 				bufferedReader.close();
 				
 			} catch (FileNotFoundException e1) {

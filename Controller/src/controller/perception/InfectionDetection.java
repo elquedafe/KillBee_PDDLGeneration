@@ -1,6 +1,6 @@
-﻿package perception;
+﻿package controller.perception;
 
-import structuralElements.Plant;
+import controller.structuralElements.Plant;
 
 public class InfectionDetection {
 	

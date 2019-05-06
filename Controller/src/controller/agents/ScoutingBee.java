@@ -1,12 +1,15 @@
-﻿package agents;
+﻿package controller.agents;
 
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.io.Writer;
 
-import functionality.Action;
-import structuralElements.Sector;
+import PDDL.TestMaPDDL;
+import controller.functionality.Action;
+import controller.structuralElements.Sector;
 
 /**
  * Class that represents the scouting bees of our system
@@ -21,19 +24,21 @@ public class ScoutingBee implements Runnable {
 	private boolean powerOff;
 	private boolean inHive;
 	private Object hasWorkToDo;
+	private BeeHive beeHive;
 	
 	/**
 	 * Scouting bee constructor
 	 * @param idBee string that identify the scouting bee
 	 * @param sectorAssigned sector object that have assigned the scouting bee
 	 */
-	public ScoutingBee(String idBee, Sector sectorAssigned, boolean powerOff, boolean inHive, Action action, Object hasWorkToDo) {
+	public ScoutingBee(String idBee, Sector sectorAssigned, boolean powerOff, boolean inHive, Action action, Object hasWorkToDo, BeeHive beeHive) {
 		this.idBee = idBee;
 		this.sectorAssigned = sectorAssigned;
 		this.action = action;
 		this.powerOff = powerOff;
 		this.inHive = inHive;
 		this.hasWorkToDo = hasWorkToDo;
+		this.beeHive = beeHive;
 	}
 	
 	public void run() {
@@ -74,14 +79,34 @@ public class ScoutingBee implements Runnable {
 								sectorAssigned.getPlantsSector()[i].setAnalyzed(true);
 								//Check if plant is infected
 								if(sectorAssigned.getPlantsSector()[i].isInfected()) {
+									for(FumigatorBee fum  :beeHive.getFumigatorBeesList()) {
+										if(fum.isInHive()) {
+											File fProb = new File("problem/problem_"+fum.getIdBee()+".pddl");
+											FileWriter fwProb = null;
+											try {
+												fwProb = new FileWriter(fProb);
+											} catch (IOException e) {
+												e.printStackTrace();
+											}
+											PrintWriter wProb = new PrintWriter(fwProb);
+											TestMaPDDL.writeProblem(wProb, fum.getIdBee(), 0, 1, 1);
+											try {
+												// Poner los argumentos!!!
+												String [] cmd = {"./","-s","-t", "10"}; //Comando para ejecutar adp
+												Runtime.getRuntime().exec(cmd);
+											} catch (IOException ioe) {
+												System.out.println (ioe);
+											}
+											/*
+											writer = new BufferedWriter(new FileWriter("infectedPlants.txt", true));
+											writer.append(System.lineSeparator()+sectorAssigned.getPlantsSector()[i].getIdPlant()+" "+fum.getIdBee()); 
+											writer.close();*/
+										}
+									}
 									//Write a new line in infected file with plant id
-									writer = new BufferedWriter(new FileWriter("infectedPlants.txt", true));
-									writer.append(System.lineSeparator()+sectorAssigned.getPlantsSector()[i].getIdPlant()); 
-									writer.close();
+									
 								}
 							} catch (InterruptedException e) {
-								e.printStackTrace();
-							} catch (IOException e) {
 								e.printStackTrace();
 							}
 						}

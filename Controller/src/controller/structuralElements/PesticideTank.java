@@ -1,9 +1,9 @@
-package structuralElements;
+package controller.structuralElements;
 
 /**
  * Class that represents the pesticide tank of the fumigator bees, it allows the filling of the
  * pesticide tank and know its state
- * @author Lukasz Marek Olszewski, Laura López Pérez, Álvaro Luis Martínez, Miguel Lagares Velasco
+ * @author Lukasz Marek Olszewski, Laura Lï¿½pez Pï¿½rez, ï¿½lvaro Luis Martï¿½nez, Miguel Lagares Velasco
  *
  */
 public class PesticideTank {
